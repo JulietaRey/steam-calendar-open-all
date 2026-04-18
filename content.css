@@ -1,0 +1,25 @@
+.steam-cal-tabs-open {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 8px 0;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  background: rgba(103, 193, 245, 0.15);
+  color: #67c1f5;
+}
+
+.steam-cal-tabs-open:hover {
+  background: rgba(103, 193, 245, 0.28);
+  border-color: rgba(103, 193, 245, 0.45);
+  color: #fff;
+}
+
+.steam-cal-tabs-open:active {
+  background: rgba(103, 193, 245, 0.4);
+}

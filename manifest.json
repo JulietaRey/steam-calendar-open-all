@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Steam calendar — open day in tabs",
+  "version": "1.0.0",
+  "description": "Adds an “Open all” control on each weekday column on the Steam personal calendar so you can open every game in that day in new tabs.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://store.steampowered.com/personalcalendar*",
+        "https://store.steampowered.com/upcoming*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
