@@ -7,7 +7,6 @@ It runs only on Steam’s store. **No accounts, no servers, no API** — it only
 ## Where it works
 
 - [Steam personal calendar](https://store.steampowered.com/personalcalendar/)
-- [Steam upcoming](https://store.steampowered.com/upcoming/)
 
 ## What you need
 
@@ -48,7 +47,7 @@ If you use Git, clone the repository and use the folder that contains `manifest.
 
 ### 4. Use it on Steam
 
-1. Visit the [personal calendar](https://store.steampowered.com/personalcalendar/) or [upcoming](https://store.steampowered.com/upcoming/) while signed in to Steam as usual.
+1. Visit the [personal calendar](https://store.steampowered.com/personalcalendar/) while signed in to Steam as usual.
 2. Under each day’s date you should see **Open all in tabs**.
 3. Click it to open each game for **that day** in a new tab.
 
