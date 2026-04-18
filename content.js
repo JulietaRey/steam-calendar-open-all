@@ -41,6 +41,64 @@ function findDayColumns() {
   return out;
 }
 
+/**
+ * Day columns use a horizontal strip of game capsules; Steam often mounts only
+ * visible items until the strip is scrolled. Sweep scroll positions synchronously
+ * so lazy content exists before we collect links (same user-gesture stack as click).
+ */
+function expandHorizontalLists(rootEl) {
+  const scrollers = [];
+  for (const el of rootEl.getElementsByTagName("*")) {
+    if (el.scrollWidth > el.clientWidth + 2) {
+      scrollers.push(el);
+    }
+  }
+
+  const depth = (el) => {
+    let d = 0;
+    for (let n = el; n && n !== rootEl; n = n.parentElement) {
+      d++;
+    }
+    return d;
+  };
+  scrollers.sort((a, b) => depth(b) - depth(a));
+
+  for (const el of scrollers) {
+    let stuck = 0;
+    for (let i = 0; i < 160; i++) {
+      const max = el.scrollWidth - el.clientWidth;
+      if (max <= 0) break;
+      const before = el.scrollLeft;
+      el.scrollLeft = Math.min(
+        el.scrollLeft + Math.max(64, el.clientWidth * 0.88),
+        max,
+      );
+      if (el.scrollLeft === before) {
+        stuck++;
+        if (stuck > 4) break;
+      } else {
+        stuck = 0;
+      }
+    }
+    el.scrollLeft = el.scrollWidth;
+  }
+  void rootEl.getBoundingClientRect();
+}
+
+/** Re-run expansion when new nodes increase scroll width (virtualized rows). */
+function expandUntilStable(rootEl) {
+  let lastWidth = -1;
+  for (let pass = 0; pass < 6; pass++) {
+    expandHorizontalLists(rootEl);
+    let w = 0;
+    for (const el of rootEl.getElementsByTagName("*")) {
+      if (el.scrollWidth > el.clientWidth + 2) w += el.scrollWidth;
+    }
+    if (w === lastWidth) break;
+    lastWidth = w;
+  }
+}
+
 function collectUniqueAppUrls(rootEl) {
   const seen = new Set();
   const urls = [];
@@ -110,7 +168,10 @@ function injectButtons() {
     btn.addEventListener("click", (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      const urls = collectUniqueAppUrls(column);
+      const dayColumn = ev.currentTarget.parentElement;
+      if (!dayColumn) return;
+      expandUntilStable(dayColumn);
+      const urls = collectUniqueAppUrls(dayColumn);
       for (const url of urls) {
         window.open(url, "_blank", "noopener,noreferrer");
       }
