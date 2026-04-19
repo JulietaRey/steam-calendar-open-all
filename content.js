@@ -30,7 +30,8 @@ function findDayColumns() {
       child.classList?.contains("Panel"),
     );
 
-    if (siblingPanels.length !== 5) continue;
+    // Steam uses Mon–Fri (5), Mon–Sat (6), or full week (7) columns; require a week-sized row.
+    if (siblingPanels.length < 5 || siblingPanels.length > 7) continue;
     if (!el.querySelector('a[href*="/app/"]')) continue;
     if (seen.has(el)) continue;
 
